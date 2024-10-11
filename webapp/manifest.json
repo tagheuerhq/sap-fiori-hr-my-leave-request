@@ -87,7 +87,7 @@
 		}
 	},
 	"sap.platform.abap": {
-		"uri": "/sap/bc/ui5_ui5/sap/zhcmfab_leavman/sap-fiori-hr-my-leave-request-master/webapp",
+        "uri": "/sap/bc/ui5_ui5/sap/zhcmfab_leavman/webapp",
 		"_version": "1.1.0"
 	}
 }

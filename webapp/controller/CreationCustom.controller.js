@@ -6,6 +6,13 @@ sap.ui.define([
 
 	return sap.ui.controller("hcm.fab.myleaverequest.HCMFAB_LEAV_MANExtension.controller.CreationCustom", {
 
+		_updateLocalModel: function (oAdditionalFieldPaths, oAbsenceTypeData, oStartDateUTC, oEndDateUTC) {
+			CreationController.prototype._updateLocalModel.apply(this, arguments);
+			
+			this.oCreateModel.setProperty("/allowedDurationHalfdayMorningInd", oAbsenceTypeData.IsAllowedDurationHalfdayMorning);
+			this.oCreateModel.setProperty("/allowedDurationHalfdayAfternoonInd", oAbsenceTypeData.IsAllowedDurationHalfdayAfternoon);
+		},
+
 		onSingleMultiDayRadioSelected: function (oEvent) {
 
 			if (this.oCreateModel.getProperty("/multiOrSingleDayRadioGroupIndex") > 1) {
