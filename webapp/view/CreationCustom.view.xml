@@ -87,7 +87,8 @@
 							<RadioButton id="rdBtnMulti" text="{i18n>multiDaysTxt}" class="sapUiSmallMarginEnd"
 								enabled="{ formatter: '.formatter.isMoreThanOneDayAllowed', parts: ['create>/AllowedDurationMultipleDayInd'] }"/>
 							<RadioButton id="rdBtnSingle" text="{i18n>oneDayTxt}"
-								enabled="{ formatter: '.formatter.isOneDayOrLessAllowed', parts: [ 'create>/AllowedDurationPartialDayInd' , 'create>/AllowedDurationSingleDayInd', 'create>/isEndDateCalculated' ] }"/>
+								enabled="{ formatter: '.formatter.isOneDayOrLessAllowed', parts: [ 'create>/AllowedDurationPartialDayInd' , 'create>/AllowedDurationSingleDayInd', 'create>/isEndDateCalculated' ] }"
+								visible="{= !!${create>/allowedDurationSingleDayOvrInd} }"/>
 							<RadioButton id="rdBtnHalfMorning" text="{i18n>halfDayMorningTxt}"
 								enabled="{ formatter: '.formatter.isOneDayOrLessAllowed', parts: [ 'create>/AllowedDurationPartialDayInd' , 'create>/AllowedDurationSingleDayInd', 'create>/isEndDateCalculated' ] }"
 								visible="{= !!${create>/allowedDurationHalfdayMorningInd} }"/>

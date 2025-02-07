@@ -8,9 +8,12 @@ sap.ui.define([
 
 		_updateLocalModel: function (oAdditionalFieldPaths, oAbsenceTypeData, oStartDateUTC, oEndDateUTC) {
 			CreationController.prototype._updateLocalModel.apply(this, arguments);
-			
-			this.oCreateModel.setProperty("/allowedDurationHalfdayMorningInd", oAbsenceTypeData.IsAllowedDurationHalfdayMorning);
-			this.oCreateModel.setProperty("/allowedDurationHalfdayAfternoonInd", oAbsenceTypeData.IsAllowedDurationHalfdayAfternoon);
+
+			CreationController.prototype.setModelProperties(this.oCreateModel, {
+				"allowedDurationHalfdayMorningInd": oAbsenceTypeData.IsAllowedDurationHalfdayMorning,
+				"allowedDurationHalfdayAfternoonInd": oAbsenceTypeData.IsAllowedDurationHalfdayAfternoon,
+				"allowedDurationSingleDayOvrInd": oAbsenceTypeData.IsAllowedDurationSingleDayOvr
+			});
 		},
 
 		onSingleMultiDayRadioSelected: function (oEvent) {
@@ -56,7 +59,7 @@ sap.ui.define([
 			if (oStartDateUTC) {
 				oParams.StartDate = oStartDateUTC;
 				oParams.EndDate = oStartDateUTC;
-				oParams.IsFirstHalf = this.oCreateModel.getProperty("/multiOrSingleDayRadioGroupIndex") === 2;
+				oParams.IsFirstHalf = this.oCreateModel.getProperty("/multiOrSingleDayRadioGroupIndex") < 3;
 
 				this._callHalfDayTimeFunctionImport(oParams).then((oHalfDayTime) => {
 						this.oODataModel.setProperty(sPath + "/StartTime", oHalfDayTime.CalculateHalfDayTime.BeginTime);
@@ -86,6 +89,21 @@ sap.ui.define([
 					}
 				});
 			});
+		},
+
+		_getInitialRadioGroupIndex: function (oAbsenceTypeData, oStartDate, oEndDate) {
+			let iInitialRadioGroupIndex = CreationController.prototype._getInitialRadioGroupIndex.apply(this, arguments);
+			
+			if (iInitialRadioGroupIndex === 1 && !oAbsenceTypeData.IsAllowedDurationSingleDayOvr) {
+				if (!!oAbsenceTypeData.IsAllowedDurationMultipleDay) {
+					iInitialRadioGroupIndex = 0;
+				} else {
+					let iMultiOrSingleDayRadioGroupIndex = this.oCreateModel.getProperty("/multiOrSingleDayRadioGroupIndex");
+					iInitialRadioGroupIndex = iMultiOrSingleDayRadioGroupIndex > 1 ? iMultiOrSingleDayRadioGroupIndex : 2;
+					this._updateHalfDayTime(oAbsenceTypeData);
+				}
+			}
+			return iInitialRadioGroupIndex;
 		},
 
 	});
